@@ -1,0 +1,60 @@
+@startuml Architecture Overview
+!theme plain
+skinparam componentStyle rectangle
+skinparam linetype ortho
+skinparam backgroundColor transparent
+skinparam direction LR
+
+title Praxis Platform Architecture
+
+package "praxis_flutter\n(Client)" as Client <<Rectangle>> {
+  rectangle "Features\n(UI + BLoC)" as Features #LightBlue
+  rectangle "Domain\n(Models +\nUseCases)" as Domain #LightGreen
+  rectangle "Data\n(Repositories)" as Data #LightYellow
+  
+  Features -right-> Domain
+  Domain -right-> Data
+}
+
+rectangle "RPC via\nServerpod Client\n(Generated)" as RPC #Orange
+
+package "praxis_server\n(Backend)" as Server <<Rectangle>> {
+  rectangle "Endpoints\n(API)" as Endpoints #LightCoral
+  rectangle "Use Cases\n(Orchestration)" as UseCases #LightSalmon
+  rectangle "Services\n(Domain Logic)" as Services #LightPink
+  rectangle "Data Sources\n(DB Access)" as DataSources #MistyRose
+  
+  Endpoints -right-> UseCases
+  UseCases -right-> Services
+  Services -right-> DataSources
+}
+
+database "PostgreSQL" as DB #LightGray
+database "Redis" as Cache #LightGray
+
+Data -right-> RPC : calls
+RPC -right-> Endpoints : RPC
+
+DataSources -down-> DB
+Endpoints -down-> Cache : Sessions
+
+note top of RPC
+  Type-safe RPC calls
+  Auto-generated from
+  server protocol
+end note
+
+note bottom of DB
+  Persistent storage:
+  - Courses, Lessons, Tasks
+  - User progress
+  - Achievements
+  - Wallet transactions
+end note
+
+note bottom of Cache
+  Session management
+  and caching
+end note
+
+@enduml
