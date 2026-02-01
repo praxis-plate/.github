@@ -6,6 +6,8 @@
 
 Educational platform for interactive programming courses with AI-powered assistance and progress tracking.
 
+> **Note:** This is an educational project developed for university purposes to gain practical development experience.
+
 **[Quick Start](#quick-start)** • **[Architecture](#architecture)** • **[Development](#development)**
 
 ---
