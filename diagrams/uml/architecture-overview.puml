@@ -1,60 +1,104 @@
-@startuml Architecture Overview
+@startuml Architecture Overview - Variant 5 (Deployment View)
 !theme plain
-skinparam componentStyle rectangle
-skinparam linetype ortho
-skinparam backgroundColor transparent
-skinparam direction LR
+skinparam backgroundColor white
 
-title Praxis Platform Architecture
+' Colors from praxis_flutter light theme (exact values)
+' primary: #10B981, onPrimary: #FFFFFF
+' card: #F5F5F7, onCard: #424242
+' surface: #EEEEEF, onSurface: #212121
+' divider: #E0E0E0
 
-package "praxis_flutter\n(Client)" as Client <<Rectangle>> {
-  rectangle "Features\n(UI + BLoC)" as Features #LightBlue
-  rectangle "Domain\n(Models +\nUseCases)" as Domain #LightGreen
-  rectangle "Data\n(Repositories)" as Data #LightYellow
-  
-  Features -right-> Domain
-  Domain -right-> Data
+skinparam stereotypeC {
+  BackgroundColor transparent
+  BorderColor transparent
 }
 
-rectangle "RPC via\nServerpod Client\n(Generated)" as RPC #Orange
-
-package "praxis_server\n(Backend)" as Server <<Rectangle>> {
-  rectangle "Endpoints\n(API)" as Endpoints #LightCoral
-  rectangle "Use Cases\n(Orchestration)" as UseCases #LightSalmon
-  rectangle "Services\n(Domain Logic)" as Services #LightPink
-  rectangle "Data Sources\n(DB Access)" as DataSources #MistyRose
+skinparam component {
+  BackgroundColor<<primary>> #10B981
+  BorderColor<<primary>> #059669
+  FontColor<<primary>> #FFFFFF
+  StereotypeFontColor<<primary>> transparent
   
-  Endpoints -right-> UseCases
-  UseCases -right-> Services
-  Services -right-> DataSources
+  BackgroundColor<<accent>> #D1FAE5
+  BorderColor<<accent>> #10B981
+  FontColor<<accent>> #064E3B
+  StereotypeFontColor<<accent>> transparent
+  
+  BackgroundColor<<secondary>> #E0F2FE
+  BorderColor<<secondary>> #0EA5E9
+  FontColor<<secondary>> #0C4A6E
+  StereotypeFontColor<<secondary>> transparent
 }
 
-database "PostgreSQL" as DB #LightGray
-database "Redis" as Cache #LightGray
+skinparam database {
+  BackgroundColor #FFEDD5
+  BorderColor #FB923C
+  FontColor #7C2D12
+}
 
-Data -right-> RPC : calls
-RPC -right-> Endpoints : RPC
+skinparam node {
+  BackgroundColor #FAFAFA
+  BorderColor #E0E0E0
+  FontColor #212121
+}
 
-DataSources -down-> DB
-Endpoints -down-> Cache : Sessions
+skinparam cloud {
+  BackgroundColor #F0F9FF
+  BorderColor #BAE6FD
+  FontColor #0369A1
+}
 
-note top of RPC
-  Type-safe RPC calls
+skinparam arrow {
+  Color #424242
+  FontColor #424242
+}
+
+title Praxis Platform Architecture (Deployment)
+
+node "Student Device                    " {
+  component "    Flutter App    \n(iOS/Android/Web)" as App <<primary>> {
+    component "praxis_client  \n\n(Generated Package)" as Client <<accent>>
+  }
+}
+
+cloud "   Internet   " as Internet #F0F9FF
+
+node "Server Infrastructure                    " {
+  component "  Serverpod Server  \n        (Dart)        " as Server <<secondary>>
+  database "  PostgreSQL  \n   (pgvector)   " as DB
+  database "     Redis     \n    (Cache)    " as Cache
+  
+  Server -down-> DB : SQL
+  Server -down-> Cache : Sessions
+}
+
+App -down-> Internet : HTTPS
+Internet -down-> Server : RPC
+
+note right of App
+  <b>Clean Architecture + BLoC</b>
+  
+  • Features (UI + BLoC)
+  • Domain (models, usecases)
+  • Data (repositories, datasources)
+  • Core (theme, router, widgets)
+end note
+
+note right of Client
+  <b>Type-safe RPC Client</b>
+  
   Auto-generated from
   server protocol
+  Bundled with Flutter app
 end note
 
-note bottom of DB
-  Persistent storage:
-  - Courses, Lessons, Tasks
-  - User progress
-  - Achievements
-  - Wallet transactions
-end note
-
-note bottom of Cache
-  Session management
-  and caching
+note right of Server
+  <b>Layered Architecture</b>
+  
+  • Endpoints (API layer)
+  • Use Cases (orchestration)
+  • Services (domain logic)
+  • Data Sources (DB access)
 end note
 
 @enduml
