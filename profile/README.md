@@ -10,7 +10,7 @@ Educational platform for interactive programming courses with AI-powered assista
 
 ---
 
-**Languages:** [English](#) • [Русский](docs/ru/README.md)
+**Languages:** [English](#) • [Русский](../docs/ru/README.md)
 
 ## Overview
 
@@ -31,9 +31,9 @@ Praxis is a full-stack educational platform consisting of:
 
 The platform follows a **client-server architecture** with clear separation:
 
-![Architecture Overview](diagrams/images/architecture-overview.png)
+![Architecture Overview](../diagrams/images/architecture-overview.png)
 
-*[View UML source](diagrams/uml/architecture-overview.puml)*
+*[View UML source](../diagrams/uml/architecture-overview.puml)*
 
 ### Technology Stack
 
@@ -152,7 +152,7 @@ Examples:
 For detailed development guidelines, code generation, testing, and deployment instructions, see:
 - [praxis-api](https://github.com/praxis-plate/praxis-api) – backend development
 - [praxis-flutter](https://github.com/praxis-plate/praxis-flutter) – frontend development
-- [AGENTS.md](AGENTS.md) – AI assistant guidelines
+- [AGENTS.md](../AGENTS.md) – AI assistant guidelines
 
 ## Documentation
 
@@ -160,7 +160,7 @@ For detailed information about each component, see their respective documentatio
 
 - **Backend:** [praxis-api](https://github.com/praxis-plate/praxis-api)
 - **Frontend:** [praxis-flutter](https://github.com/praxis-plate/praxis-flutter)
-- **AI Guidelines:** [AGENTS.md](AGENTS.md)
+- **AI Guidelines:** [AGENTS.md](../AGENTS.md)
 
 ### External Resources
 
